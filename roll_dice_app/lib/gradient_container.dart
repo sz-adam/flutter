@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 class GradientContainer extends StatelessWidget {
-  const GradientContainer(this.color1, this.color2, {super.key});
+  GradientContainer(this.color1, this.color2, {super.key});
 
   final Color color1;
   final Color color2;
 
-  void rollDice() {}
+  var activeDiceImage = 'assets/images/dice-2.png';
+
+  void rollDice() {
+    activeDiceImage = 'assets/images/dice-4.png';
+    print('Print');
+  }
 
   @override
   Widget build(context) {
@@ -22,7 +27,7 @@ class GradientContainer extends StatelessWidget {
           child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset('assets/images/dice-2.png'),
+          Image.asset(activeDiceImage),
           const SizedBox(height: 20), //fix méret ha van gyermek eleme , és annak a tartalma tulcsordul akkor azt levágja 
           TextButton(
             onPressed: rollDice,
