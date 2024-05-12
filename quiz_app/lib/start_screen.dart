@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatelessWidget {
-  const StartScreen({super.key});
+  const StartScreen(this.switchScreen, {super.key});
+
+  final void Function() switchScreen;
+  //final változó értéke csak egyszer állítható be 
+  //void nem tér vissza semmilyen értékkel
 
   @override
   Widget build(context) {
@@ -26,7 +30,9 @@ class StartScreen extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           OutlinedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              switchScreen();
+            },
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white,
             ),
