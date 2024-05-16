@@ -23,20 +23,20 @@ class _QuizState extends State<Quiz> {
     });
   }
 
-   // Widget? activeScreen ;
+  // Widget? activeScreen ;
 //
- // @override
- // void initState() {
- //   activeScreen = StartScreen(switchScreen);
- //   super.initState();
- // }
+  // @override
+  // void initState() {
+  //   activeScreen = StartScreen(switchScreen);
+  //   super.initState();
+  // }
   //initState widget állapot vagy elsődleges adatok betöltésére szolgál ,csak egyszer jön létre a widget élettartalma során
 
- /// void switchScreen() {
- ///   setState(() {
- ///     activeScreen = const QuestionsScreen();
- ///   });
- /// }
+  /// void switchScreen() {
+  ///   setState(() {
+  ///     activeScreen = const QuestionsScreen();
+  ///   });
+  /// }
 
   void chooseAnswer(String answer) {
     selectedAnswers.add(answer);
@@ -59,8 +59,10 @@ class _QuizState extends State<Quiz> {
       );
     }
 
-    if(activeScreen == 'result-screen') {
-      screenWidget = const ResultsScreen();
+    if (activeScreen == 'result-screen') {
+      screenWidget = ResultsScreen(
+        chosenAnswers: selectedAnswers,
+      );
     }
 
     return MaterialApp(
