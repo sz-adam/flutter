@@ -1,9 +1,12 @@
-import 'package:expense_tracker_app/widget/expense_list/expenses_list.dart';
 import 'package:expense_tracker_app/models/expense.dart';
+import 'package:expense_tracker_app/widget/expense_list/expenses_list.dart';
 import 'package:flutter/material.dart';
+
+
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
+
   @override
   State<Expenses> createState() {
     return _ExpensesState();
@@ -13,34 +16,46 @@ class Expenses extends StatefulWidget {
 class _ExpensesState extends State<Expenses> {
   final List<Expense> _registeredExpenses = [
     Expense(
-        title: 'Flutter Course',
-        amount: 19.99,
-        date: DateTime.now(),
-        category: Category.work),
+      title: 'Flutter Course',
+      amount: 19.99,
+      date: DateTime.now(),
+      category: Category.work,
+    ),
     Expense(
-        title: 'Cinema',
-        amount: 15.99,
-        date: DateTime.now(),
-        category: Category.leisure),
+      title: 'Cinema',
+      amount: 15.69,
+      date: DateTime.now(),
+      category: Category.leisure,
+    ),
   ];
+
+  void _openAddExpenseOverlay() {
+
+   showModalBottomSheet(
+     context: context,
+     builder: (ctx) =>const Text('Modal bottom sheet'),
+   );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter expense Tracker'),
-        centerTitle: true,        
+        title: const Text('Flutter ExpenseTracker'),
+        centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _openAddExpenseOverlay,
             icon: const Icon(Icons.add),
           ),
         ],
       ),
       body: Column(
         children: [
-          //Toolbar with the Add button => Row()
           const Text('The chart'),
-          Expanded(child: ExpensesList(expenses: _registeredExpenses))
+          Expanded(
+            child: ExpensesList(expenses: _registeredExpenses),
+          ),
         ],
       ),
     );
