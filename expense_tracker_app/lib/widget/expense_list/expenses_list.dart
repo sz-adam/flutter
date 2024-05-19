@@ -13,14 +13,31 @@ class ExpensesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: expenses.length,
-      //Dismissible csusztatás funkció , törlés hozzárendelve
       itemBuilder: (ctx, index) => Dismissible(
-          key: ValueKey(expenses[index]),
-          onDismissed: (direction) {
-            onRemoveExpense(expenses[index]);
-          },
-         
-          child: ExpenseItem(expenses[index])),
+        key: ValueKey(expenses[index]),
+        onDismissed: (direction) {
+          onRemoveExpense(expenses[index]);
+        },
+        background: Container(
+          color: Colors.red,
+          alignment: Alignment.centerLeft,
+          padding:const EdgeInsets.symmetric(horizontal: 20),
+          child:const Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
+        ),
+        secondaryBackground: Container(
+          color: Colors.red,
+          alignment: Alignment.centerRight,
+          padding:const EdgeInsets.symmetric(horizontal: 20),
+          child:const Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
+        ),
+        child: ExpenseItem(expenses[index]),
+      ),
     );
   }
 }
