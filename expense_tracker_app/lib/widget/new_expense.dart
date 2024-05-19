@@ -17,7 +17,7 @@ class _NewExpenseState extends State<NewExpense> {
 
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
-  //dispose a memoriából való törlést szolgálja TextEditingController-nél mindig szükséges 
+  //dispose a memoriából való törlést szolgálja TextEditingController-nél mindig szükséges
   @override
   void dispose() {
     _titleController.dispose();
@@ -25,10 +25,17 @@ class _NewExpenseState extends State<NewExpense> {
     super.dispose();
   }
 
+ void _presentDatePicker()  {
+  final now = DateTime.now();
+  final firstDate = DateTime(now.year -1, now.month,now.day);
+
+    showDatePicker(context: context, initialDate: now ,firstDate: firstDate, lastDate: now);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding:const EdgeInsets.all(16),
       child: Column(
         children: [
           TextField(
@@ -41,30 +48,54 @@ class _NewExpenseState extends State<NewExpense> {
               label: Text('Title'),
             ),
           ),
-         TextField(
-            controller: _amountController,
-            //onChanged: _saveTitleInput,
-            maxLength: 50,
-            //Billentyüzet fajta megnyitás
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              //number dollár pénznem mutatása
-              prefixText: '\$ ',
-              label: Text('Amount'),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _amountController,
+                  //onChanged: _saveTitleInput,
+                  maxLength: 50,
+                  //Billentyüzet fajta megnyitás
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    //number dollár pénznem mutatása
+                    prefixText: '\$ ',
+                    label: Text('Amount'),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+               Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text('Selected Date'),
+                   IconButton(
+                      onPressed: _presentDatePicker,
+                      icon: const Icon(Icons.calendar_month),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
           Row(
             children: [
-              TextButton(onPressed: (){
-                Navigator.pop(context);
-              }, child: const Text('Cancel')),
-              ElevatedButton(
+              TextButton(
                   onPressed: () {
-                    print(_titleController);
-                    print(_amountController);
+                    Navigator.pop(context);
                   },
-                  child: const Text('Save Expense'),),
-                
+                  child: const Text('Cancel')),
+              ElevatedButton(
+                onPressed: () {
+                  print(_titleController);
+                  print(_amountController);
+                },
+                child: const Text('Save Expense'),
+              ),
             ],
           )
         ],
