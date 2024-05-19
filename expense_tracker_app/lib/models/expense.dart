@@ -33,3 +33,31 @@ class Expense {
     return formatter.format(date);
   }
 }
+
+class ExpenseBucket {
+  // A konstruktora, amely egy adott kategóriát és az ahhoz tartozó költségek listáját fogadja.
+  const ExpenseBucket({required this.category, required this.expenses});
+
+  // Egy named constructor, amely az összes költségből létrehoz egy adott kategóriához tartozó költségcsoportot.
+  ExpenseBucket.forCategory(List<Expense> allExpenses, this.category)
+      : expenses = allExpenses
+            .where((expense) => expense.category == category) // Csak azokat a költségeket választja ki, amelyek az adott kategóriához tartoznak.
+            .toList(); // A kiválasztott költségeket listává alakítja.
+  
+  // A kategória, amelyhez ez a költségcsoport tartozik.
+  final Category category;
+  // A kategóriához tartozó költségek listája.
+  final List<Expense> expenses;
+
+  // A kategóriához tartozó költségek összegét számolja ki.
+  double get totalExpenses {
+    double sum = 0;
+
+    // Végigmegy a költségek listáján és összeadja az egyes költségek összegét.
+    for (final expense in expenses) {
+      sum += expense.amount; // sum = sum + expense.amount
+    }
+
+    return sum; // Visszaadja az összesített összeget.
+  }
+}
