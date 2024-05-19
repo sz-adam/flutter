@@ -9,10 +9,18 @@ class NewExpense extends StatefulWidget {
 }
 
 class _NewExpenseState extends State<NewExpense> {
-  var _enteredTitle = '';
+// var _enteredTitle = '';
+//
+// void _saveTitleInput(String inputValue) {
+//   _enteredTitle = inputValue;
+// }
 
-  void _saveTitleInput(String inputValue) {
-    _enteredTitle = inputValue;
+  final _titleController = TextEditingController();
+  //dispose a memoriából való törlést szolgálja TextEditingController-nél mindig szükséges 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    super.dispose();
   }
 
   @override
@@ -22,7 +30,8 @@ class _NewExpenseState extends State<NewExpense> {
       child: Column(
         children: [
           TextField(
-            onChanged: _saveTitleInput,
+            controller: _titleController,
+            //onChanged: _saveTitleInput,
             maxLength: 50,
             //Billentyüzet fajta megnyitás
             keyboardType: TextInputType.text,
@@ -34,8 +43,9 @@ class _NewExpenseState extends State<NewExpense> {
             children: [
               ElevatedButton(
                   onPressed: () {
-                    print(_enteredTitle);
-                  }, child: const Text('Save Expense'))
+                    print(_titleController);
+                  },
+                  child: const Text('Save Expense'))
             ],
           )
         ],
