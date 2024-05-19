@@ -19,7 +19,7 @@ class ExpensesList extends StatelessWidget {
           onRemoveExpense(expenses[index]);
         },
         background: Container(
-          color: Colors.red,
+          color: Theme.of(context).colorScheme.error,
           alignment: Alignment.centerLeft,
           padding:const EdgeInsets.symmetric(horizontal: 20),
           child:const Icon(
@@ -28,7 +28,7 @@ class ExpensesList extends StatelessWidget {
           ),
         ),
         secondaryBackground: Container(
-          color: Colors.red,
+          color: Theme.of(context).colorScheme.error,
           alignment: Alignment.centerRight,
           padding:const EdgeInsets.symmetric(horizontal: 20),
           child:const Icon(
