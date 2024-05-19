@@ -16,10 +16,12 @@ class _NewExpenseState extends State<NewExpense> {
 // }
 
   final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
   //dispose a memoriából való törlést szolgálja TextEditingController-nél mindig szükséges 
   @override
   void dispose() {
     _titleController.dispose();
+    _amountController.dispose();
     super.dispose();
   }
 
@@ -39,13 +41,28 @@ class _NewExpenseState extends State<NewExpense> {
               label: Text('Title'),
             ),
           ),
+         TextField(
+            controller: _amountController,
+            //onChanged: _saveTitleInput,
+            maxLength: 50,
+            //Billentyüzet fajta megnyitás
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              //number dollár pénznem mutatása
+              prefixText: '\$ ',
+              label: Text('Amount'),
+            ),
+          ),
           Row(
             children: [
+              TextButton(onPressed: (){}, child: const Text('Cancel')),
               ElevatedButton(
                   onPressed: () {
                     print(_titleController);
+                    print(_amountController);
                   },
-                  child: const Text('Save Expense'))
+                  child: const Text('Save Expense'),),
+                
             ],
           )
         ],
