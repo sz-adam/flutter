@@ -33,6 +33,8 @@ class _ExpensesState extends State<Expenses> {
   void _openAddExpenseOverlay() {
 
    showModalBottomSheet(
+    //modal teljes ablak
+    isScrollControlled: true,
      context: context,
      builder: (ctx) =>NewExpense(onAddExpense: _addExpense,),
    );
