@@ -31,6 +31,7 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      useSafeArea: true,
       //modal teljes ablak
       isScrollControlled: true,
       context: context,
