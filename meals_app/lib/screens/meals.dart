@@ -4,10 +4,10 @@ import 'package:meals_app/screens/meal_details.dart';
 import 'package:meals_app/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key, required this.meals, required this.title});
+  const MealsScreen({super.key, required this.meals,  this.title});
 
   //átadott adatok tipusának meghatározása
-  final String title;
+  final String? title;
   final List<Meal> meals;
 
   //Navigation mealsDetails
@@ -62,9 +62,13 @@ class MealsScreen extends StatelessWidget {
         ),
       );
     }
+
+    if(title == null){
+      return content;
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(title!),
       ),
       body: content,
     );

@@ -34,11 +34,7 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pick your Category'),
-      ),
-      body: GridView(
+    return  GridView(
         padding: const EdgeInsets.all(16),
         //grid elem :crossAxisCount 2 oszlop ,childAspectRatio: 3 / 2, // Szélesség / Magasság arány
         //rács elemek közötti távolság crossAxisSpacing: 20, mainAxisSpacing: 20
@@ -60,7 +56,7 @@ class CategoriesScreen extends StatelessWidget {
 
           //availableCategories.map((category) => CategoryGridItem(category: category)).toList()
         ],
-      ),
-    );
+      );
+    
   }
 }
