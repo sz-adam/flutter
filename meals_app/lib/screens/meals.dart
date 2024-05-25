@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
   const MealsScreen({super.key, required this.meals, required this.title});
@@ -43,10 +44,7 @@ class MealsScreen extends StatelessWidget {
       // Ha nem üres, akkor a content-et egy Center widgetre cseréli
       content = ListView.builder(
         itemCount: meals.length,
-        itemBuilder: (ctx, index) => Text(
-          meals[index]
-              .title, // Minden elemhez létrehoz egy Text widgetet, ami az étel címét jeleníti meg
-        ),
+        itemBuilder: (ctx, index) => MealItem(meal: meals[index])
       );
     }
     return Scaffold(
