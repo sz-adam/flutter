@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/models/category.dart';
 
 class CategoryGridItem extends StatelessWidget {
-  const CategoryGridItem({super.key, required this.category});
+  const CategoryGridItem({super.key, required this.category,required this.onSelectedCategory});
 
 //category import
   final Category category;
+  //navigáció átadása
+  final void Function() onSelectedCategory;
 
   @override
   Widget build(BuildContext context) {
     /// InkWell(add visszajelzést) vagy  GestureDetector(nem ad visszajelezést) widgettel coppintathato
     return InkWell(
-      onTap: () {},
+      onTap: onSelectedCategory,
       //szinátmenet + radius rá 
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(16),

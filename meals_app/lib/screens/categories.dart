@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/data/dummy_data.dart';
+import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
+
+
+  //NAVIGÁCIÓ
+  //context nem érhető el ezért kell meghívni
+  void _selectCategory(BuildContext context) {
+    //Navigáció
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        //MealsScreen-re navigál át 
+        builder: (ctx) =>const MealsScreen(
+          title: 'Some title',
+          meals: [],
+        ),
+      ),
+    ); // Navigator.push(context, route)
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +40,15 @@ class CategoriesScreen extends StatelessWidget {
         children: [
           //végig megyünk a availableCategories gyüjteményen és minden egyes elemhez létrehoz egy CategoryGridItem widgetet
           for (final category in availableCategories)
-            CategoryGridItem(category: category)
+            CategoryGridItem(
+              category: category,
+              //függvény átadás
+              onSelectedCategory: () {
+                _selectCategory(context);
+              },
+            )
 
-            //availableCategories.map((category) => CategoryGridItem(category: category)).toList()
+          //availableCategories.map((category) => CategoryGridItem(category: category)).toList()
         ],
       ),
     );
