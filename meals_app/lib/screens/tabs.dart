@@ -16,7 +16,9 @@ class _TabsScreenState extends State<TabsScreen> {
   final List<Meal> _favoriteMeals = [];
 
   void _showInfoMessage(String message){
+    //információs üzenet a törlésre 
     ScaffoldMessenger.of(context).clearSnackBars();
+    //információs üzenet a hozzáadásra
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
