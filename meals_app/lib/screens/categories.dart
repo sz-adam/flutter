@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/data/dummy_data.dart';
+import 'package:meals_app/models/category.dart';
 import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
 
-
   //NAVIGÁCIÓ
   //context nem érhető el ezért kell meghívni
-  void _selectCategory(BuildContext context) {
+  void _selectCategory(BuildContext context, Category category) {
+
+    //dummyMeals listát szűri olyan elemekre, amelyek tartalmazzák az adott kategória azonosítóját
+    final filteredMeals = dummyMeals
+    //where csak azokat az elemeket tartalmazza, amelyek megfelelnek a megadott feltételnek.
+        .where(
+          (meal) => meal.categories.contains(category.id),
+        )
+        //listává alakítjuk 
+        .toList();
+
     //Navigáció
     Navigator.of(context).push(
       MaterialPageRoute(
-        //MealsScreen-re navigál át 
-        builder: (ctx) =>const MealsScreen(
-          title: 'Some title',
-          meals: [],
+        //MealsScreen-re navigál át
+        builder: (ctx) => MealsScreen(
+          title: category.title,
+          meals: filteredMeals,
         ),
       ),
     ); // Navigator.push(context, route)
@@ -44,7 +54,7 @@ class CategoriesScreen extends StatelessWidget {
               category: category,
               //függvény átadás
               onSelectedCategory: () {
-                _selectCategory(context);
+                _selectCategory(context, category);
               },
             )
 
