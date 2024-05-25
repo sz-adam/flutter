@@ -46,6 +46,13 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
+  void _setScreen(String indetifer){
+      if(indetifer =='filters'){
+        }else{
+        Navigator.of(context).pop();
+      }
+    } 
+
   @override
   Widget build(BuildContext context) {
     var activePageTitle = 'Categories';
@@ -60,11 +67,13 @@ class _TabsScreenState extends State<TabsScreen> {
       activePageTitle = 'Your Favorites';
     }
 
+    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(activePageTitle),
       ),
-      drawer: MainDrawer(),
+      drawer: MainDrawer(onSelectScreen: _setScreen),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectedPage,
