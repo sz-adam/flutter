@@ -50,6 +50,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void _setScreen(String indetifer) {
     if (indetifer == 'filters') {
        Navigator.of(context).pop();
+       //pushReplacement lecserélödik a képernyő emulátoron se müködik a vissza gomb
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (ctx) => const FiltersScreen(),
