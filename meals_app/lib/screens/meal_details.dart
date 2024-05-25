@@ -12,15 +12,57 @@ class MealDetails extends StatelessWidget {
       appBar: AppBar(
         title: Text(meal.title),
       ),
-      body: Image.network(
-        //kép elérése
-        meal.imageUrl,
-        //teljes szélesség
-        width: double.infinity,
-        //magasság 300 képpont
-        height: 300,
-        //eredeti képarány megtartása
-        fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Image.network(
+              //kép elérése
+              meal.imageUrl,
+              //teljes szélesség
+              width: double.infinity,
+              //magasság 300 képpont
+              height: 300,
+              //eredeti képarány megtartása
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(height: 14),
+            Text(
+              'Ingredients',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            //vagy mapp függvénnyel
+            for (final ingedient in meal.ingredients)
+              Text(
+                ingedient,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: Theme.of(context).colorScheme.onBackground),
+              ),
+            const SizedBox(height: 24),
+            Text(
+              'Steps',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            for (final step in meal.steps)
+              Padding(              
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Text(
+                  step, textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: Theme.of(context).colorScheme.onBackground),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
