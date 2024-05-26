@@ -63,7 +63,7 @@ class _TabsScreenState extends State<TabsScreen> {
       //pushReplacement lecserélödik a képernyő emulátoron se müködik a vissza gomb
       final result = await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
-          builder: (ctx) => const FiltersScreen(),
+          builder: (ctx) => FiltersScreen(currentFilters: _selectedFilters,),
         ),
       );
 
