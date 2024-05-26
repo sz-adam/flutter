@@ -6,9 +6,10 @@ import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/category_grid_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key,required this.onToggleFavorite});
+  const CategoriesScreen({super.key,required this.onToggleFavorite,required this.availableMeals});
   
     final void Function(Meal meal) onToggleFavorite;
+    final List<Meal> availableMeals;
 
 
   //NAVIGÁCIÓ
@@ -16,7 +17,7 @@ class CategoriesScreen extends StatelessWidget {
   void _selectCategory(BuildContext context, Category category) {
 
     //dummyMeals listát szűri olyan elemekre, amelyek tartalmazzák az adott kategória azonosítóját
-    final filteredMeals = dummyMeals
+    final filteredMeals = availableMeals //használata a szűréshez
     //where csak azokat az elemeket tartalmazza, amelyek megfelelnek a megadott feltételnek.
         .where(
           (meal) => meal.categories.contains(category.id),
