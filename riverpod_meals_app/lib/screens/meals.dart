@@ -8,19 +8,19 @@ class MealsScreen extends StatelessWidget {
       {super.key,
       required this.meals,
       this.title,
-      required this.onToggleFavorite});
+    });
 
   //átadott adatok tipusának meghatározása
   final String? title;
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFavorite;
+
 
   //Navigation mealsDetails
   void selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) =>
-            MealDetails(meal: meal, onToggleFavorite: onToggleFavorite),
+            MealDetails(meal: meal),
       ),
     );
   }
