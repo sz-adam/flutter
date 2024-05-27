@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:meals_app/data/dummy_data.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/providers/meals_provider.dart';
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/filters.dart';
 import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 const kInitialFilters = {
   Filter.glutenFree: false,
@@ -13,14 +14,15 @@ const kInitialFilters = {
   Filter.vegan: false
 };
 
-class TabsScreen extends StatefulWidget {
+//StatefulWidget átírása ConsumerStatefulWidget-re hogy a provider használható legyen 
+class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
-
-class _TabsScreenState extends State<TabsScreen> {
+//StatefulWidget átírása ConsumerStatefulWidget-re hogy a provider használható legyen 
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
 
   final List<Meal> _favoriteMeals = [];
@@ -63,7 +65,9 @@ class _TabsScreenState extends State<TabsScreen> {
       //pushReplacement lecserélödik a képernyő emulátoron se müködik a vissza gomb
       final result = await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
-          builder: (ctx) => FiltersScreen(currentFilters: _selectedFilters,),
+          builder: (ctx) => FiltersScreen(
+            currentFilters: _selectedFilters,
+          ),
         ),
       );
 
@@ -76,19 +80,21 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     var activePageTitle = 'Categories';
-//dummyMeals szűrése a feltételek alapján 
-     final availableMeals = dummyMeals.where(
+//meals provider meghívása 
+    final meals = ref.watch(mealsProvider);
+    //dummyMeals szűrése a feltételek alapján
+    final availableMeals = meals.where(/// dummyMeals helyett már a providerben lévő meals-t használja
       (meal) {
         if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
           return false;
         }
-         if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+        if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
           return false;
         }
-         if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+        if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
           return false;
         }
-         if (_selectedFilters[Filter.vegan]! && !meal.isVegetarian) {
+        if (_selectedFilters[Filter.vegan]! && !meal.isVegetarian) {
           return false;
         }
         return true;
@@ -99,8 +105,6 @@ class _TabsScreenState extends State<TabsScreen> {
       onToggleFavorite: _toggleMealFavoriteStatus,
       availableMeals: availableMeals,
     );
-
-   
 
     if (_selectedPageIndex == 1) {
       activePage = MealsScreen(
