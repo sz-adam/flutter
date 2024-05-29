@@ -13,22 +13,28 @@ class MealDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+   final favoriteMeal = ref.watch(favoritesMealsProvider);
+
+  final isFavorite =favoriteMeal.contains(meal);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
           IconButton(
               onPressed: () {
-               final wasAdded= ref
+                final wasAdded = ref
                     .watch(favoritesMealsProvider.notifier)
                     .toggleMealFavoritStatus(meal);
-                     //információs üzenet a törlésre
-    ScaffoldMessenger.of(context).clearSnackBars();
-    //információs üzenet a hozzáadásra
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(wasAdded ? 'Meal addad as a favorite' : 'Meal renoved')));
+                //információs üzenet a törlésre
+                ScaffoldMessenger.of(context).clearSnackBars();
+                //információs üzenet a hozzáadásra
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(wasAdded
+                        ? 'Meal addad as a favorite'
+                        : 'Meal renoved')));
               },
-              icon: const Icon(Icons.star))
+              icon: Icon(isFavorite ? Icons.star: Icons.star_border))
         ],
       ),
       body: SingleChildScrollView(
