@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/providers/favorites_provider.dart';
-import 'package:meals_app/providers/meals_provider.dart';
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/filters.dart';
 import 'package:meals_app/screens/meals.dart';
@@ -49,41 +48,22 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var activePageTitle = 'Categories';
-//meals provider meghívása
-    final meals = ref.watch(mealsProvider);
-    final activeFilters = ref.watch(filtersProvider);
-    //dummyMeals szűrése a feltételek alapján
-    final availableMeals = meals.where(
-      /// dummyMeals helyett már a providerben lévő meals-t használja
-      (meal) {
-        if (activeFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
-          return false;
-        }
-        if (activeFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
-          return false;
-        }
-        if (activeFilters[Filter.vegetarian]! && !meal.isVegetarian) {
-          return false;
-        }
-        if (activeFilters[Filter.vegan]! && !meal.isVegetarian) {
-          return false;
-        }
-        return true;
-      },
-    ).toList();
+   final availableMeals =ref.watch(filteredMealsProvider);
+    
+   
 
     Widget activePage = CategoriesScreen(
-      //onToggleFavorite: _toggleMealFavoriteStatus,
       availableMeals: availableMeals,
     );
+    var activePageTitle = 'Categories';
 
     if (_selectedPageIndex == 1) {
-      final favotiteMeals = ref.watch(favoritesMealsProvider);
-      activePage = MealsScreen(meals: favotiteMeals);
+      final favoriteMeals = ref.watch(favoritesMealsProvider);
+      activePage = MealsScreen(
+        meals: favoriteMeals,
+      );
       activePageTitle = 'Your Favorites';
     }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(activePageTitle),
