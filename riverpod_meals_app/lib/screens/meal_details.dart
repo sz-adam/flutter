@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/providers/favorites_provider.dart';
+import 'package:meals_app/widgets/step.dart';
 
 class MealDetails extends ConsumerWidget {
   const MealDetails({
@@ -10,6 +12,8 @@ class MealDetails extends ConsumerWidget {
   });
 
   final Meal meal;
+
+  
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -79,24 +83,31 @@ class MealDetails extends ConsumerWidget {
                     color: Theme.of(context).colorScheme.onBackground),
               ),
             const SizedBox(height: 24),
-            Text(
-              'Steps',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            for (final step in meal.steps)
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: Text(
-                  step,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground),
-                ),
-              ),
+             StepsSection(meal: meal, isFavorite: isFavorite),
+         ///  AnimatedOpacity(
+         ///    opacity: _visible ? 0.0 : 1.0,
+         ///duration: const Duration(milliseconds: 1000),
+         ///
+         ///    
+         ///    child: Text(
+         ///      'Steps',
+         ///      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+         ///          color: Theme.of(context).colorScheme.primary,
+         ///          fontWeight: FontWeight.bold),
+         ///    ),
+         ///  ),
+         ///  const SizedBox(height: 16),
+         ///  for (final step in meal.steps)
+         ///    Padding(
+         ///      padding:
+         ///          const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+         ///      child: Text(
+         ///        step,
+         ///        textAlign: TextAlign.center,
+         ///        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+         ///            color: Theme.of(context).colorScheme.onBackground),
+         ///      ),
+          //    ),
           ],
         ),
       ),
