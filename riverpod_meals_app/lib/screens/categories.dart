@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meals_app/data/dummy_data.dart';
 import 'package:meals_app/models/category.dart';
 import 'package:meals_app/models/meal.dart';
@@ -87,9 +88,13 @@ class _CategoriesScreenState extends State<CategoriesScreen>
             //availableCategories.map((category) => CategoryGridItem(category: category)).toList()
           ],
         ),
-        builder: (context, child) => Padding(
-              padding:
-                  EdgeInsets.only(top: 200 - _animationController.value * 200),
+        //saját animáció beállítás
+        builder: (context, child) => SlideTransition(
+              position: Tween(
+                begin: const Offset(0, 0.3),
+                end: const Offset(0, 0),
+              ).animate(CurvedAnimation(
+                  parent: _animationController, curve: Curves.easeInOut)),
               child: child,
             ));
   }
