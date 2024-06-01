@@ -13,28 +13,38 @@ class MealDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-   final favoriteMeal = ref.watch(favoritesMealsProvider);
+    final favoriteMeal = ref.watch(favoritesMealsProvider);
 
-  final isFavorite =favoriteMeal.contains(meal);
+    final isFavorite = favoriteMeal.contains(meal);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
+          //explicit animációt én készítem az implicit animációt a flutter adja
           IconButton(
-              onPressed: () {
-                final wasAdded = ref
-                    .watch(favoritesMealsProvider.notifier)
-                    .toggleMealFavoritStatus(meal);
-                //információs üzenet a törlésre
-                ScaffoldMessenger.of(context).clearSnackBars();
-                //információs üzenet a hozzáadásra
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(wasAdded
-                        ? 'Meal addad as a favorite'
-                        : 'Meal renoved')));
+            onPressed: () {
+              final wasAdded = ref
+                  .watch(favoritesMealsProvider.notifier)
+                  .toggleMealFavoritStatus(meal);
+              //információs üzenet a törlésre
+              ScaffoldMessenger.of(context).clearSnackBars();
+              //információs üzenet a hozzáadásra
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                      wasAdded ? 'Meal addad as a favorite' : 'Meal renoved')));
+            },
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return RotationTransition(
+                  turns: Tween<double>(begin: 0.8, end: 1).animate(animation),
+                  child: child,
+                );
               },
-              icon: Icon(isFavorite ? Icons.star: Icons.star_border))
+              child: Icon(isFavorite ? Icons.star : Icons.star_border, key: ValueKey(isFavorite),),
+            ),
+          ),
         ],
       ),
       body: SingleChildScrollView(
