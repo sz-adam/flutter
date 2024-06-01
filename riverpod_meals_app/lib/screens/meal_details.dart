@@ -50,15 +50,18 @@ class MealDetails extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.network(
-              //kép elérése
-              meal.imageUrl,
-              //teljes szélesség
-              width: double.infinity,
-              //magasság 300 képpont
-              height: 300,
-              //eredeti képarány megtartása
-              fit: BoxFit.cover,
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                //kép elérése
+                meal.imageUrl,
+                //teljes szélesség
+                width: double.infinity,
+                //magasság 300 képpont
+                height: 300,
+                //eredeti képarány megtartása
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 14),
             Text(

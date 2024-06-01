@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/widgets/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -39,16 +40,20 @@ class MealItem extends StatelessWidget {
         //Stack widget -> widgeteket lehet egymásra pakolni
         child: Stack(
           children: [
-            FadeInImage(
-              //Helykitöltő widget, placeholder amig a kép nem töltödik le addig mutatja
-              placeholder: MemoryImage(kTransparentImage),
-              // kép betöltése
-              image: NetworkImage(meal.imageUrl),
-              //kép soha ne torzuljon
-              fit: BoxFit.cover,
-              height: 200,
-              //teljes szélleség
-              width: double.infinity,
+            //oldalak közötti animáció 
+            Hero(
+              tag:meal.id ,
+              child: FadeInImage(
+                //Helykitöltő widget, placeholder amig a kép nem töltödik le addig mutatja
+                placeholder: MemoryImage(kTransparentImage),
+                // kép betöltése
+                image: NetworkImage(meal.imageUrl),
+                //kép soha ne torzuljon
+                fit: BoxFit.cover,
+                height: 200,
+                //teljes szélleség
+                width: double.infinity,
+              ),
             ),
             Positioned(
               //ugyanaz mint css-ben a postion relative absolute
