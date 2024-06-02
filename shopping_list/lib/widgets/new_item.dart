@@ -105,7 +105,9 @@ _formKey.currentState!.validate();
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _formKey.currentState!.reset();
+                    },
                     child: const Text('Reset'),
                   ),
                   ElevatedButton(
