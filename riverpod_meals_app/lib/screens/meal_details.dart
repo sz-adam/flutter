@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/providers/favorites_provider.dart';
+import 'package:meals_app/widgets/ingredients.dart';
 import 'package:meals_app/widgets/step.dart';
 
 class MealDetails extends ConsumerWidget {
@@ -68,22 +69,23 @@ class MealDetails extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 14),
-            Text(
-              'Ingredients',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            //vagy mapp függvénnyel
-            for (final ingedient in meal.ingredients)
-              Text(
-                ingedient,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground),
-              ),
+            IngredientsSection(meal: meal),
+        /// Text(
+        ///   'Ingredients',
+        ///   style: Theme.of(context).textTheme.titleLarge!.copyWith(
+        ///       color: Theme.of(context).colorScheme.primary,
+        ///       fontWeight: FontWeight.bold),
+        /// ),
+        /// const SizedBox(height: 16),
+        /// //vagy mapp függvénnyel
+        /// for (final ingedient in meal.ingredients)
+        ///   Text(
+        ///     ingedient,
+        ///     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+        ///         color: Theme.of(context).colorScheme.onBackground),
+        ///   ),
             const SizedBox(height: 24),
-             StepsSection(meal: meal, isFavorite: isFavorite),
+             StepsSection(meal: meal)
          ///  AnimatedOpacity(
          ///    opacity: _visible ? 0.0 : 1.0,
          ///duration: const Duration(milliseconds: 1000),
