@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping_list/data/categories.dart';
+import 'package:shopping_list/models/category.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -9,12 +10,16 @@ class NewItem extends StatefulWidget {
 }
 
 class _NewItemState extends State<NewItem> {
+  final _formKey = GlobalKey<FormState>();
+  var _enteredName = '';
+  var _enteredQantity = 1;
+  var _selectedCategory = categories[Categories.vegetables]!;
 
-  final _formKey =GlobalKey<FormState>();
-
-  void _saveItem(){
-_formKey.currentState!.validate();
-
+  void _saveItem() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      //print(_enteredName);
+    }
   }
 
   @override
@@ -46,6 +51,9 @@ _formKey.currentState!.validate();
                   }
                   return null;
                 },
+                onSaved: (value) {
+                  _enteredName = value!;
+                },
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -60,7 +68,7 @@ _formKey.currentState!.validate();
                         //ha az érték null vagy üres vagy nem egy üres karaktert(spacest) adtunk meg vagy nem lehet 50 karakternél több
                         if (value == null ||
                             value.isEmpty ||
-                            //egész számá valo konvertálás , ha sikertelen akkor null értéket adja meg 
+                            //egész számá valo konvertálás , ha sikertelen akkor null értéket adja meg
                             int.tryParse(value) == null ||
                             //egy érvényes egész szám, de nem pozitív (azaz nulla vagy negatív).
                             int.tryParse(value)! <= 0) {
@@ -69,32 +77,42 @@ _formKey.currentState!.validate();
                         return null;
                       },
                       //kezdeti érték , stringként kell kezelni
-                      initialValue: '1',
+                      initialValue: _enteredQantity.toString(),
+                      onSaved: (value) {
+                        _enteredQantity = int.parse(value!);
+                      },
                     ),
                   ),
                   const SizedBox(
                     width: 8,
                   ),
                   Expanded(
-                    child: DropdownButtonFormField(items: [
-                      for (final category in categories.entries)
-                        DropdownMenuItem(
-                          value: category.value,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 16,
-                                height: 16,
-                                color: category.value.color,
+                    child: DropdownButtonFormField(
+                        value: _selectedCategory,
+                        items: [
+                          for (final category in categories.entries)
+                            DropdownMenuItem(
+                              value: category.value,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 16,
+                                    height: 16,
+                                    color: category.value.color,
+                                  ),
+                                  const SizedBox(
+                                    width: 6,
+                                  ),
+                                  Text(category.value.title),
+                                ],
                               ),
-                              const SizedBox(
-                                width: 6,
-                              ),
-                              Text(category.value.title),
-                            ],
-                          ),
-                        ),
-                    ], onChanged: (value) {}),
+                            ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedCategory = value!;
+                          });
+                        }),
                   )
                 ],
               ),
