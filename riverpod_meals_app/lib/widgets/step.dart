@@ -5,11 +5,11 @@ class StepsSection extends StatefulWidget {
   const StepsSection({
     super.key,
     required this.meal,
-    required this.isFavorite,
+
   }) ;
 
   final Meal meal;
-  final bool isFavorite;
+
 
   @override
   _StepsSectionState createState() => _StepsSectionState();
