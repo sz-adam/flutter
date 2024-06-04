@@ -18,6 +18,8 @@ class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _groceryItems = [];
   var _isLoading = true;
 
+  String? _error;
+
 //képernyő betöltésénél a loadItems meghívása ami get kérést küld
   @override
   void initState() {
@@ -38,7 +40,11 @@ class _GroceryListState extends State<GroceryList> {
     // A JSON karakterláncot dekódolja és Map<String, dynamic> típusú objektummá alakítja
     // Ez a Map kulcs-érték párokat tartalmaz, ahol a kulcsok string-ek, az értékek pedig bármilyen típusúak lehetnek
     final Map<String, dynamic> listData = json.decode(responseBody);
-
+    setState(() {
+      if (response.statusCode >= 400) {
+        _error = 'Failed to fetch data. Please try again later';
+      }
+    });
     // Üres lista a betöltött elemek tárolására
     final List<GroceryItem> _loadedItems = [];
 
@@ -99,7 +105,7 @@ class _GroceryListState extends State<GroceryList> {
 
     if (_isLoading) {
       content = const Center(
-        //loading widget animálva van 
+        //loading widget animálva van
         child: CircularProgressIndicator(),
       );
     }
@@ -125,6 +131,10 @@ class _GroceryListState extends State<GroceryList> {
           ),
         ),
       );
+    }
+
+    if (_error != null) {
+      content = Center(child: Text(_error!));
     }
 
     return Scaffold(
