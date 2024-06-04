@@ -33,55 +33,56 @@ class _GroceryListState extends State<GroceryList> {
       APIEndpoints.shoppingList,
     );
 
-    final response = await http.get(url);
-    // A válasz body-ját (tartalmát) Stringként olvassa be
-    final responseBody = response.body;
-    setState(() {
-      if (response.statusCode >= 400) {
-        _error = 'Failed to fetch data. Please try again later';
+    try {
+      final response = await http.get(url);
+      // A válasz body-ját (tartalmát) Stringként olvassa be
+      final responseBody = response.body;
+
+      if (responseBody == 'null') {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
       }
-    });
 
-    if (responseBody == 'null') {
+      // A JSON karakterláncot dekódolja és Map<String, dynamic> típusú objektummá alakítja
+      // Ez a Map kulcs-érték párokat tartalmaz, ahol a kulcsok string-ek, az értékek pedig bármilyen típusúak lehetnek
+      final Map<String, dynamic> listData = json.decode(responseBody);
+
+      // Üres lista a betöltött elemek tárolására
+      final List<GroceryItem> _loadedItems = [];
+
+      // Végigiterál a listData elemein (kulcs-érték párokon)
+      for (final item in listData.entries) {
+        // Az aktuális kategória keresése a kategóriák listájában
+        // Első olyan kategória, amelynek címe megegyezik az aktuális listaelem "category" értékével
+        // A keresés eredménye egy Category objektum lesz (feltételezve, hogy van ilyen osztály)
+        final category = categories.entries
+            .firstWhere(
+                (catItem) => catItem.value.title == item.value['category'])
+            .value;
+
+        // Új GroceryItem objektum létrehozása a betöltött adatokból
+        _loadedItems.add(
+          GroceryItem(
+            id: item.key, // Kulcs azonosítóként használva
+            name: item.value['name'], // Értékből ("name") kiolvasva a név
+            quantity: item.value[
+                'quantity'], // Értékből ("quantity") kiolvasva a mennyiség
+            category: category, // Kategória objektum hozzáadása
+          ),
+        );
+      }
+
+      // Az állapot frissítése az új listaelemekkel
       setState(() {
-        _isLoading= false;
+        _groceryItems = _loadedItems;
       });
-      return;
+    } catch (error) {
+      setState(() {
+        _error = 'Something went wrong . Please try again later';
+      });
     }
-
-    // A JSON karakterláncot dekódolja és Map<String, dynamic> típusú objektummá alakítja
-    // Ez a Map kulcs-érték párokat tartalmaz, ahol a kulcsok string-ek, az értékek pedig bármilyen típusúak lehetnek
-    final Map<String, dynamic> listData = json.decode(responseBody);
-
-    // Üres lista a betöltött elemek tárolására
-    final List<GroceryItem> _loadedItems = [];
-
-    // Végigiterál a listData elemein (kulcs-érték párokon)
-    for (final item in listData.entries) {
-      // Az aktuális kategória keresése a kategóriák listájában
-      // Első olyan kategória, amelynek címe megegyezik az aktuális listaelem "category" értékével
-      // A keresés eredménye egy Category objektum lesz (feltételezve, hogy van ilyen osztály)
-      final category = categories.entries
-          .firstWhere(
-              (catItem) => catItem.value.title == item.value['category'])
-          .value;
-
-      // Új GroceryItem objektum létrehozása a betöltött adatokból
-      _loadedItems.add(
-        GroceryItem(
-          id: item.key, // Kulcs azonosítóként használva
-          name: item.value['name'], // Értékből ("name") kiolvasva a név
-          quantity: item
-              .value['quantity'], // Értékből ("quantity") kiolvasva a mennyiség
-          category: category, // Kategória objektum hozzáadása
-        ),
-      );
-    }
-
-    // Az állapot frissítése az új listaelemekkel
-    setState(() {
-      _groceryItems = _loadedItems;
-    });
   }
 
   void _addItem() async {
