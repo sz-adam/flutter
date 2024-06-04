@@ -87,14 +87,29 @@ class _GroceryListState extends State<GroceryList> {
     }
     setState(() {
       _groceryItems.add(newItem);
+      _isLoading = false;
     });
   }
 
-  void _removeItem(GroceryItem item) {
+  void _removeItem(GroceryItem item) async {
+    //ha valami hiba történik a törlésnél 
+    final index = _groceryItems.indexOf(item);
+    //törlés
     setState(() {
       _groceryItems.remove(item);
-      _isLoading = false;
     });
+    final url = Uri.https(
+      APIEndpoints.baseURL,
+      'shopping-list/${item.id}.json',
+    );
+
+    final response = await http.delete(url);
+     //ha valami hiba történik a törlésnél 
+    if (response.statusCode >= 400) {
+      setState(() {
+        _groceryItems.insert(index, item);
+      });
+    }
   }
 
   @override
