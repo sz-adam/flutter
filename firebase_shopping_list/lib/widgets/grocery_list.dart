@@ -36,15 +36,23 @@ class _GroceryListState extends State<GroceryList> {
     final response = await http.get(url);
     // A válasz body-ját (tartalmát) Stringként olvassa be
     final responseBody = response.body;
-
-    // A JSON karakterláncot dekódolja és Map<String, dynamic> típusú objektummá alakítja
-    // Ez a Map kulcs-érték párokat tartalmaz, ahol a kulcsok string-ek, az értékek pedig bármilyen típusúak lehetnek
-    final Map<String, dynamic> listData = json.decode(responseBody);
     setState(() {
       if (response.statusCode >= 400) {
         _error = 'Failed to fetch data. Please try again later';
       }
     });
+
+    if (responseBody == 'null') {
+      setState(() {
+        _isLoading= false;
+      });
+      return;
+    }
+
+    // A JSON karakterláncot dekódolja és Map<String, dynamic> típusú objektummá alakítja
+    // Ez a Map kulcs-érték párokat tartalmaz, ahol a kulcsok string-ek, az értékek pedig bármilyen típusúak lehetnek
+    final Map<String, dynamic> listData = json.decode(responseBody);
+
     // Üres lista a betöltött elemek tárolására
     final List<GroceryItem> _loadedItems = [];
 
@@ -92,7 +100,7 @@ class _GroceryListState extends State<GroceryList> {
   }
 
   void _removeItem(GroceryItem item) async {
-    //ha valami hiba történik a törlésnél 
+    //ha valami hiba történik a törlésnél
     final index = _groceryItems.indexOf(item);
     //törlés
     setState(() {
@@ -104,7 +112,7 @@ class _GroceryListState extends State<GroceryList> {
     );
 
     final response = await http.delete(url);
-     //ha valami hiba történik a törlésnél 
+    //ha valami hiba történik a törlésnél
     if (response.statusCode >= 400) {
       setState(() {
         _groceryItems.insert(index, item);
