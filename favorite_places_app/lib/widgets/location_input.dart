@@ -46,8 +46,9 @@ class _LocationInputState extends State<LocationInput> {
     setState(() {
       _isGettingLocation = true; // Állapot frissítése, hogy a hely meghatározása folyamatban van
     });
-
+//TODO: Api hibája , vagy az emulátoré hogy nem megfelelő a kordináta lekérés ? 
     locationData = await location.getLocation(); // Aktuális helyadatok megszerzése
+    print(locationData);
     final lat = locationData.latitude;
     final lng = locationData.longitude;
     if (lat == null || lng == null) {
