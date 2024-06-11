@@ -6,7 +6,9 @@ import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({super.key});
+  const LocationInput({super.key,required this.onSelecLocation});
+
+  final void Function(PlaceLocation location) onSelecLocation;
 
   @override
   State<LocationInput> createState() {
@@ -64,6 +66,8 @@ class _LocationInputState extends State<LocationInput> {
       _isGettingLocation = false; // Állapot frissítése, hogy a hely meghatározása befejeződött
       _pickedLocation = PlaceLocation(city: city, latitude: lat, longItude: lng);
     });
+
+    widget.onSelecLocation(_pickedLocation!);
   }
 
   @override

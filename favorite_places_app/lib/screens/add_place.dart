@@ -20,6 +20,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   File? _selectedImage;
   PlaceLocation? _selectedLocation;
 
+
   void _savePlace() {
     final enteredTitle = _titleController.text;
 
@@ -64,6 +65,9 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               },
             ),
             LocationInput(
+              onSelecLocation: (location){
+                _selectedLocation =location;
+              },
             ),
             const SizedBox(height: 16),
             ElevatedButton.icon(
