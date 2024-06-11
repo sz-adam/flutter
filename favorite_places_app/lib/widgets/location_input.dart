@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'package:favorite_places_app/constans/urls.dart';
+import 'package:favorite_places_app/models/place.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
 
 class LocationInput extends StatefulWidget {
   const LocationInput({super.key});
@@ -11,7 +15,7 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
-  Location? _pickedLocation; // Választott hely tárolására szolgáló változó
+  PlaceLocation? _pickedLocation; // Választott hely tárolására szolgáló változó
   var _isGettingLocation = false; // Állapotváltozó a hely meghatározás folyamatának nyomon követésére
 
   void _getCurrentLocation() async {
@@ -44,14 +48,21 @@ class _LocationInputState extends State<LocationInput> {
     });
 
     locationData = await location.getLocation(); // Aktuális helyadatok megszerzése
+    final lat = locationData.latitude;
+    final lng = locationData.longitude;
+    if (lat == null || lng == null) {
+      return;
+    }
+    final url = Uri.parse(GeocodeService.buildGeocodeUrl(lat, lng));
+    final response = await http.get(url);
+    final resData = json.decode(response.body);
+    print(resData['city']);
+    final city = resData['city'];
 
     setState(() {
       _isGettingLocation = false; // Állapot frissítése, hogy a hely meghatározása befejeződött
+      _pickedLocation = PlaceLocation(city: city, latitude: lat, longItude: lng);
     });
-
-    // Az aktuális helyadatok (szélességi és hosszúsági koordináták) kiírása a konzolra
-    print(locationData.latitude);
-    print(locationData.longitude);
   }
 
   @override
@@ -68,6 +79,20 @@ class _LocationInputState extends State<LocationInput> {
     // Ha a hely meghatározása folyamatban van, megjeleníti a körbeforgó indikátort
     if (_isGettingLocation) {
       previewContent = const CircularProgressIndicator();
+    } else if (_pickedLocation != null) {
+      previewContent = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'City: ${_pickedLocation!.city}',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+          ),
+         
+        ],
+      );
     }
 
     return Column(
