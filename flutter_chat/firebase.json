@@ -4,7 +4,7 @@
       "android": {
         "default": {
           "projectId": "chat-app-c0782",
-          "appId": "1:304755778467:android:e2120f054c9b42ea2e7016",
+          "appId": "1:304755778467:android:787ae471212a4cdd2e7016",
           "fileOutput": "android/app/google-services.json"
         }
       },
@@ -12,7 +12,8 @@
         "lib/firebase_options.dart": {
           "projectId": "chat-app-c0782",
           "configurations": {
-            "android": "1:304755778467:android:97e8d0a06c8712372e7016"
+            "android": "1:304755778467:android:787ae471212a4cdd2e7016",
+            "ios": "1:304755778467:ios:4fd49828f8c516da2e7016"
           }
         }
       }
