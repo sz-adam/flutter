@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_app/widgets/user_image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -31,11 +32,11 @@ class _AuthScreenState extends State<AuthScreen> {
       return;
     }
 
-   if (!_isLogin && _selectedImage == null) {
-  // Ha nem bejelentkezés módban vagyunk és nincs kép kiválasztva,
-  // akkor térjünk vissza, és ne folytassuk a kód végrehajtását.
-  return;
-}
+    if (!_isLogin && _selectedImage == null) {
+      // Ha nem bejelentkezés módban vagyunk és nincs kép kiválasztva,
+      // akkor térjünk vissza, és ne folytassuk a kód végrehajtását.
+      return;
+    }
 
     _form.currentState!.save();
 
@@ -46,6 +47,17 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         final userCredentials = await _firebase.createUserWithEmailAndPassword(
             email: _enteredEmail, password: _enteredPassword);
+
+//firebase storage-ban létrehoz egy mappát és a mappába a userCredentials uid alapján menti a képet
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child('${userCredentials.user!.uid}.jpg');
+        //menti a képet
+        await storageRef.putFile(_selectedImage!);
+        //késöbbi urlt addd vissza
+       final imageUrl= await storageRef.getDownloadURL();
+       print(imageUrl);
       }
     } on FirebaseAuthException catch (error) {
       if (error.code == 'email-already-in-use') {
@@ -90,7 +102,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           if (!_isLogin)
-                          //alkomponens pickedImage beállítom a selectedimage-ra 
+                            //alkomponens pickedImage beállítom a selectedimage-ra
                             UserImagePicker(
                               onPickImage: (pickedImage) {
                                 _selectedImage = pickedImage;
