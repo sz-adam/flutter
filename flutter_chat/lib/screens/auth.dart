@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chat_app/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,12 +22,20 @@ class _AuthScreenState extends State<AuthScreen> {
   var _enteredEmail = '';
   var _enteredPassword = '';
 
+  File? _selectedImage;
+
   void _submit() async {
     final isValid = _form.currentState!.validate();
 
     if (!isValid) {
       return;
     }
+
+   if (!_isLogin && _selectedImage == null) {
+  // Ha nem bejelentkezés módban vagyunk és nincs kép kiválasztva,
+  // akkor térjünk vissza, és ne folytassuk a kód végrehajtását.
+  return;
+}
 
     _form.currentState!.save();
 
@@ -79,7 +89,13 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          if(!_isLogin) UserImagePicker(),
+                          if (!_isLogin)
+                          //alkomponens pickedImage beállítom a selectedimage-ra 
+                            UserImagePicker(
+                              onPickImage: (pickedImage) {
+                                _selectedImage = pickedImage;
+                              },
+                            ),
                           TextFormField(
                             decoration: const InputDecoration(
                                 labelText: 'Email Address'),
