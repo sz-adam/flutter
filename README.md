@@ -1,3 +1,3 @@
-# Flutter Training
+# Flutter  Course
 
-[Flutter Training - Udemy](https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/?couponCode=KEEPLEARNING)
+[Flutter  Course - Udemy](https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/?couponCode=KEEPLEARNING)
